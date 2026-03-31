@@ -20,20 +20,22 @@
 <body>
 
   <!-- ═══════════════════════ NAV ═══════════════════════ -->
-  <nav>
+<nav>
+  <a href="#hero">
+    <img src="Images/PortfolioLogo.svg" alt="Logo" class="logo" />
+  </a>
 
-    <a href="#hero">
-      <img src="Images/PortfolioLogo.svg" alt="Logo" class="logo" />
-    </a>
+  <button class="nav-toggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 
-    <ul class="nav-links">
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#projects">Projects</a></li>
-    </ul>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
 
-    <div class="nav-actions">
-
+    <!-- Buttons shown inside drawer on mobile -->
+    <li class="mobile-actions">
       <a href="#contact" class="btn-outline" style="text-decoration: none;">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -42,7 +44,6 @@
         </svg>
         Reach Out
       </a>
-
       <a href="ArnoldBinuMathew_Resume.pdf" download class="btn-solid">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -53,10 +54,50 @@
         </svg>
         Download Resume
       </a>
+    </li>
+  </ul>
 
-    </div>
+  <!-- Buttons shown in navbar on tablet/desktop -->     
+  <div class="nav-actions">
+    <a href="#contact" class="btn-outline" style="text-decoration: none;">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+      </svg>
+      Reach Out
+    </a>
+    <a href="ArnoldBinuMathew_Resume.pdf" download class="btn-solid">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v10" />
+        <polyline points="8 9 12 13 16 9" />
+        <path d="M3 17v1a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-1" />
+        <polyline points="3 17 3 20 21 20 21 17" />
+      </svg>
+      Download Resume
+    </a>
+  </div>
+</nav>
 
-  </nav>
+<!-- place just before </body> -->
+<script>
+  const toggle = document.querySelector('.nav-toggle');
+  const links  = document.querySelector('.nav-links');
+
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('open');
+    links.classList.toggle('open');
+  });
+
+  // Close drawer when any link or button inside is tapped
+  links.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => {
+      toggle.classList.remove('open');
+      links.classList.remove('open');
+    })
+  );
+</script>
 
 
   <!-- ═══════════════════════ HERO ═══════════════════════ -->
