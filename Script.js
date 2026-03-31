@@ -110,21 +110,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ── NAV BAR ── */
+document.addEventListener("DOMContentLoaded", () => {
+
   const toggle = document.querySelector('.nav-toggle');
   const links  = document.querySelector('.nav-links');
 
-  if (toggle && links) {
-    toggle.addEventListener('click', () => {
-      toggle.classList.toggle('open');
-      links.classList.toggle('open');
-    });
-
-    links.querySelectorAll('a').forEach(a =>
-      a.addEventListener('click', () => {
-        toggle.classList.remove('open');
-        links.classList.remove('open');
-      })
-    );
+  if (!toggle || !links) {
+    console.error("Navbar elements not found");
+    return;
   }
+
+  toggle.addEventListener('click', () => {
+    toggle.classList.toggle('open');
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => {
+      toggle.classList.remove('open');
+      links.classList.remove('open');
+    })
+  );
 
 });

@@ -64,7 +64,7 @@ nav {
 }
 
 .logo {
-  width: 160px;
+  width: 140px;
   height: auto;       
   max-width: 100%;
 }
@@ -241,9 +241,11 @@ nav {
     gap: 0;
   }
 
+/* Mobile */
+
   .logo {
-    width: 80px;
-    height: auto;
+    width: 110px;
+    min-width: 100px;
   }
 
   .nav-toggle {
@@ -311,8 +313,7 @@ nav {
   }
 
   .logo {
-    width: 100px;
-    height: auto;
+    width: 120px;
   }
 
   .nav-links {
