@@ -26,7 +26,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }, 2500);
   }
+  /* ── NAVBAR (FIXED - NO NESTING) ── */
 
+  const toggle = document.querySelector('.nav-toggle');
+  const links  = document.querySelector('.nav-links');
+
+  if (toggle && links) {
+
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('open');
+      links.classList.toggle('open');
+    });
+
+    links.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => {
+        toggle.classList.remove('open');
+        links.classList.remove('open');
+      })
+    );
+  }
+
+});
   /* ── CONTACT FORM ── */
 
   const FORMSPREE_ENDPOINT = "https://formspree.io/f/xkopjzkz";
@@ -42,31 +62,32 @@ document.addEventListener("DOMContentLoaded", () => {
       const input = document.getElementById(inputId);
       const msg   = document.getElementById(errorId);
 
-      if (!input || !msg) return; // 🔴 prevents crash
+      if (!input || !msg) return;
 
       input.classList.toggle("invalid", show);
       msg.classList.toggle("visible", show);
     }
 
     function isValidEmail(value) {
+      if (!value) return false;
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     }
 
     function validate() {
-      const name    = document.getElementById("contact-name")?.value.trim();
-      const email   = document.getElementById("contact-email")?.value.trim();
-      const subject = document.getElementById("contact-subject")?.value.trim();
-      const message = document.getElementById("contact-message")?.value.trim();
+      const name    = document.getElementById("contact-name")?.value?.trim() || "";
+      const email   = document.getElementById("contact-email")?.value?.trim() || "";
+      const subject = document.getElementById("contact-subject")?.value?.trim() || "";
+      const message = document.getElementById("contact-message")?.value?.trim() || "";
 
       setError("contact-name",    "error-name",    !name);
       setError("contact-email",   "error-email",   !isValidEmail(email));
       setError("contact-subject", "error-subject", !subject);
       setError("contact-message", "error-message", !message);
 
-      return !!(name && isValidEmail(email) && subject && message);
+      return name && isValidEmail(email) && subject && message;
     }
 
-    // SAFE input listeners
+    // Live validation fix
     ["contact-name", "contact-email", "contact-subject", "contact-message"].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
@@ -84,8 +105,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!validate()) return;
 
-      submitBtn?.classList.add("loading");
-      submitBtn.disabled = true;
+      if (submitBtn) {
+        submitBtn.classList.add("loading");
+        submitBtn.disabled = true;
+      }
 
       try {
         const res = await fetch(FORMSPREE_ENDPOINT, {
@@ -100,36 +123,15 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           errorBox?.classList.add("visible");
         }
+
       } catch {
         errorBox?.classList.add("visible");
       } finally {
-        submitBtn?.classList.remove("loading");
-        submitBtn.disabled = false;
+        if (submitBtn) {
+          submitBtn.classList.remove("loading");
+          submitBtn.disabled = false;
+        }
       }
     });
   }
 
-  /* ── NAV BAR ── */
-document.addEventListener("DOMContentLoaded", () => {
-
-  const toggle = document.querySelector('.nav-toggle');
-  const links  = document.querySelector('.nav-links');
-
-  if (!toggle || !links) {
-    console.error("Navbar elements not found");
-    return;
-  }
-
-  toggle.addEventListener('click', () => {
-    toggle.classList.toggle('open');
-    links.classList.toggle('open');
-  });
-
-  links.querySelectorAll('a').forEach(a =>
-    a.addEventListener('click', () => {
-      toggle.classList.remove('open');
-      links.classList.remove('open');
-    })
-  );
-
-});
