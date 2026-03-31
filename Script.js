@@ -1,121 +1,130 @@
-/* ── ROLE TYPEWRITER ── */
-const roles = [
-  "UI/UX Designer",
-  "Product Designer",
-  "Visual Designer",
-  "Interaction Designer"
-];
+document.addEventListener("DOMContentLoaded", () => {
 
-let index = 0;
-const textElement = document.getElementById("role-text");
+  /* ── ROLE TYPEWRITER ── */
+  const roles = [
+    "Product Designer",
+    "Visual Designer",
+    "Interaction Designer"
+  ];
 
-if (textElement) {
-  setInterval(() => {
+  let index = -1;
+  const textElement = document.getElementById("role-text");
 
-    textElement.classList.add("fade-out");
-    textElement.classList.remove("fade-in");
+  if (textElement) {
+    setInterval(() => {
 
-    setTimeout(() => {
-      index = (index + 1) % roles.length;
-      textElement.textContent = roles[index];
+      textElement.classList.add("fade-out");
+      textElement.classList.remove("fade-in");
 
-      textElement.classList.remove("fade-out");
-      textElement.classList.add("fade-in");
+      setTimeout(() => {
+        index = (index + 1) % roles.length;
+        textElement.textContent = roles[index];
 
-    }, 500);
+        textElement.classList.remove("fade-out");
+        textElement.classList.add("fade-in");
+      }, 500);
 
-  }, 2500);
-}
-
-
-/* ── CONTACT FORM ── */
-
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xkopjzkz"; // 👈 replace with your endpoint
-
-const form       = document.getElementById("contactForm");
-const submitBtn  = document.getElementById("submitBtn");
-const successBox = document.getElementById("formSuccess");
-const errorBox   = document.getElementById("formError");
-
-if (form) {
-
-  function setError(inputId, errorId, show) {
-    const input = document.getElementById(inputId);
-    const msg   = document.getElementById(errorId);
-    input.classList.toggle("invalid", show);
-    msg.classList.toggle("visible", show);
+    }, 2500);
   }
 
-  function isValidEmail(value) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  }
+  /* ── CONTACT FORM ── */
 
-  function validate() {
-    const name    = document.getElementById("contact-name").value.trim();
-    const email   = document.getElementById("contact-email").value.trim();
-    const subject = document.getElementById("contact-subject").value.trim();
-    const message = document.getElementById("contact-message").value.trim();
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xkopjzkz";
 
-    setError("contact-name",    "error-name",    !name);
-    setError("contact-email",   "error-email",   !isValidEmail(email));
-    setError("contact-subject", "error-subject", !subject);
-    setError("contact-message", "error-message", !message);
+  const form       = document.getElementById("contactForm");
+  const submitBtn  = document.getElementById("submitBtn");
+  const successBox = document.getElementById("formSuccess");
+  const errorBox   = document.getElementById("formError");
 
-    return !!(name && isValidEmail(email) && subject && message);
-  }
+  if (form) {
 
-  // clear error as user types
+    function setError(inputId, errorId, show) {
+      const input = document.getElementById(inputId);
+      const msg   = document.getElementById(errorId);
 
-  ["contact-name", "contact-email", "contact-subject", "contact-message"].forEach(id => {
-    document.getElementById(id).addEventListener("input", () => {
-      setError(id, "error-" + id.replace("contact-", ""), false);
-    });
-  });
+      if (!input || !msg) return; // 🔴 prevents crash
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    successBox.classList.remove("visible");
-    errorBox.classList.remove("visible");
-
-    if (!validate()) return;
-
-    submitBtn.classList.add("loading");
-    submitBtn.disabled = true;
-
-    try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" }
-      });
-
-      if (res.ok) {
-        successBox.classList.add("visible");
-        form.reset();
-      } else {
-        errorBox.classList.add("visible");
-      }
-    } catch {
-      errorBox.classList.add("visible");
-    } finally {
-      submitBtn.classList.remove("loading");
-      submitBtn.disabled = false;
+      input.classList.toggle("invalid", show);
+      msg.classList.toggle("visible", show);
     }
-  });
-}
-/* ── NAV Bar ── */
+
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function validate() {
+      const name    = document.getElementById("contact-name")?.value.trim();
+      const email   = document.getElementById("contact-email")?.value.trim();
+      const subject = document.getElementById("contact-subject")?.value.trim();
+      const message = document.getElementById("contact-message")?.value.trim();
+
+      setError("contact-name",    "error-name",    !name);
+      setError("contact-email",   "error-email",   !isValidEmail(email));
+      setError("contact-subject", "error-subject", !subject);
+      setError("contact-message", "error-message", !message);
+
+      return !!(name && isValidEmail(email) && subject && message);
+    }
+
+    // SAFE input listeners
+    ["contact-name", "contact-email", "contact-subject", "contact-message"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("input", () => {
+          setError(id, "error-" + id.replace("contact-", ""), false);
+        });
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      successBox?.classList.remove("visible");
+      errorBox?.classList.remove("visible");
+
+      if (!validate()) return;
+
+      submitBtn?.classList.add("loading");
+      submitBtn.disabled = true;
+
+      try {
+        const res = await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" }
+        });
+
+        if (res.ok) {
+          successBox?.classList.add("visible");
+          form.reset();
+        } else {
+          errorBox?.classList.add("visible");
+        }
+      } catch {
+        errorBox?.classList.add("visible");
+      } finally {
+        submitBtn?.classList.remove("loading");
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  /* ── NAV BAR ── */
   const toggle = document.querySelector('.nav-toggle');
   const links  = document.querySelector('.nav-links');
 
-  toggle.addEventListener('click', () => {
-    toggle.classList.toggle('open');
-    links.classList.toggle('open');
-  });
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('open');
+      links.classList.toggle('open');
+    });
 
-  // Close drawer when a link is tapped
-  links.querySelectorAll('a').forEach(a =>
-    a.addEventListener('click', () => {
-      toggle.classList.remove('open');
-      links.classList.remove('open');
-    })
-  );
+    links.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => {
+        toggle.classList.remove('open');
+        links.classList.remove('open');
+      })
+    );
+  }
+
+});
