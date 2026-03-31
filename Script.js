@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     toggle.addEventListener('click', () => {
       toggle.classList.toggle('open');
+      console.log("Clicked");
       links.classList.toggle('open');
     });
 
@@ -134,4 +135,3 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-

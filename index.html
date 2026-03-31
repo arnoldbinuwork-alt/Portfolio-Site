@@ -80,25 +80,6 @@
   </div>
 </nav>
 
-<script>
-  const toggle = document.querySelector('.nav-toggle');
-  const links  = document.querySelector('.nav-links');
-
-  toggle.addEventListener('click', () => {
-    toggle.classList.toggle('open');
-    links.classList.toggle('open');
-  });
-
-  // Close drawer when any link or button inside is tapped
-  links.querySelectorAll('a').forEach(a =>
-    a.addEventListener('click', () => {
-      toggle.classList.remove('open');
-      links.classList.remove('open');
-    })
-  );
-</script>
-
-
   <!-- ═══════════════════════ HERO ═══════════════════════ -->
   <section class="hero" id="hero">
 
